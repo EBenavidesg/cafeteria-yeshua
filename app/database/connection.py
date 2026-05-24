@@ -28,6 +28,8 @@ if DATABASE_URL:
     # Supabase a veces da la URL con 'postgres://', SQLAlchemy necesita 'postgresql://'
     if DATABASE_URL.startswith("postgres://"):
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    # psycopg2 no entiende el parámetro ?pgbouncer=true, lo quitamos
+    DATABASE_URL = DATABASE_URL.split("?")[0]
     engine = create_engine(DATABASE_URL, echo=False, pool_pre_ping=True)
 else:
     # --- Modo local: SQLite ---
